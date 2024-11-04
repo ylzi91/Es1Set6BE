@@ -32,17 +32,6 @@ public class DipendenteController {
         return dipendenteService.findByUsername(username);
     }
 
-    @PostMapping
-    public Dipendente saveDipendente(@RequestBody @Validated NewDipendenteDTO body, BindingResult validationResult){
-        if(validationResult.hasErrors()){
-            String message = validationResult.getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.joining(". "));
-            throw new BadRequestException(message);
-        }
-        return dipendenteService.saveDipendente(body);
-    }
 
     @DeleteMapping("/{username}")
     public void deleteById(@PathVariable String username){

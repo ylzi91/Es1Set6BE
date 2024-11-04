@@ -41,6 +41,7 @@ public class DipendenteService {
             throw new SameUsernameorEmailException(body.email());
         else{
             Dipendente nuovoDipendente = new Dipendente(body.username(), body.nome(), body.cognome(), body.email());
+            nuovoDipendente.setPassword(body.password());
             dipendenteRepository.save(nuovoDipendente);
             return nuovoDipendente;
         }
