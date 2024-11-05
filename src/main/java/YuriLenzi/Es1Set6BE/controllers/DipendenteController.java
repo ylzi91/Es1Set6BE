@@ -9,6 +9,7 @@ import YuriLenzi.Es1Set6BE.services.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,14 @@ public class DipendenteController {
     }
 
     @GetMapping("/{username}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Dipendente findById(@PathVariable String username){
         return dipendenteService.findByUsername(username);
+    }
+
+    @GetMapping("/me")
+    public Dipendente getMyProfile(@AuthenticationPrincipal Dipendente currentDipendenteAuth){
+        return dipendenteService.findByUsername(currentDipendenteAuth.getUsername());
     }
 
 
