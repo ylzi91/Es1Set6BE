@@ -10,6 +10,7 @@ import YuriLenzi.Es1Set6BE.repositories.DipendenteRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,9 @@ public class DipendenteService {
 
     @Autowired
     Cloudinary cloudinaryUploader;
+
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public List<Dipendente> findAll(){
         return dipendenteRepository.findAll();
@@ -41,7 +45,7 @@ public class DipendenteService {
             throw new SameUsernameorEmailException(body.email());
         else{
             Dipendente nuovoDipendente = new Dipendente(body.username(), body.nome(), body.cognome(), body.email());
-            nuovoDipendente.setPassword(body.password());
+            nuovoDipendente.setPassword(bcrypt.encode(body.password()));
             dipendenteRepository.save(nuovoDipendente);
             return nuovoDipendente;
         }

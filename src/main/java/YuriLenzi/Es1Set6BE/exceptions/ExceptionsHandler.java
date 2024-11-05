@@ -2,6 +2,7 @@ package YuriLenzi.Es1Set6BE.exceptions;
 
 import YuriLenzi.Es1Set6BE.payloadsDTO.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -45,6 +46,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequest(SameUsernameorEmailException  ex){
         return new ErrorResponseDTO(ex.getMessage());
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponseDTO handleBadRequest(AuthorizationDeniedException ex){
+        return new ErrorResponseDTO("Non sei un utente autorizzato!!");
     }
 
 
